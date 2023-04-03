@@ -27,6 +27,8 @@ pub const SHADER_HANDLE: HandleUntyped =
 pub struct EdgeDetectionPlugin;
 impl Plugin for EdgeDetectionPlugin {
     fn build(&self, app: &mut App) {
+        app.register_type::<EdgeDetectionConfig>();
+
         load_internal_asset!(app, SHADER_HANDLE, "edge_detection.wgsl", Shader::from_wgsl);
 
         let Ok(render_app) = app.get_sub_app_mut(RenderApp) else {
@@ -57,7 +59,7 @@ impl Plugin for EdgeDetectionPlugin {
     }
 }
 
-#[derive(Resource, ShaderType, Clone, Copy)]
+#[derive(Resource, ShaderType, Clone, Copy, Reflect, FromReflect)]
 pub struct EdgeDetectionConfig {
     pub depth_threshold: f32,
     pub normal_threshold: f32,
